@@ -72,7 +72,9 @@ var UIController = (function() {
     inputValue: ".add__value",
     inputButton: ".add__btn",
     clickEvent: "click",
-    keyPressEvent: "keypress"
+    keyPressEvent: "keypress",
+    incomeContainer: ".income__list",
+    expenseContainer: ".expenses__list"
   };
 
   return {
@@ -88,6 +90,26 @@ var UIController = (function() {
         description: description,
         value: value
       };
+    },
+    addListItem: function(obj, type) {
+      var html, newHtml, isIncome, element;
+      isIncome = type === "inc";
+      html =
+        // Create HTML string with placeholder text
+        isIncome
+          ? '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+          : '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+
+      element = isIncome
+        ? DOMStrings.incomeContainer
+        : DOMStrings.expenseContainer;
+      // Replace placeholder text w/ actual data
+      newHtml = html
+        .replace("%id%", obj.id)
+        .replace("%value%", obj.value)
+        .replace("%description%", obj.description);
+      // Insert HTML into DOM
+      document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
     },
     getDOMStrings: function() {
       return DOMStrings;
@@ -118,6 +140,7 @@ var controller = (function(budgetCtrl, UICtrl) {
     var input = UICtrl.getInput();
     // Add item to the budget controller
     newItem = budgetCtrl.pushItem(input);
+    UICtrl.addListItem(newItem, input.type);
     var y = budgetCtrl.getData();
     // Add the item to the UI
     // Calculate budget
