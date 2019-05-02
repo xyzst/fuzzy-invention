@@ -27,14 +27,24 @@ var budgetController = (function() {
   };
 
   var budgetFactory = function(input) {
+    // Need to generate a unique id for each item in each array
+    // Do not use size of array, but rather the actual value since items can be
+    // deleted from either array
+    // best case: [1 2 3 4 5], next Id = 6 (sorted)
+    // worst case: [1 2 4 6 8], next Id = 9 (unsorted)\
+    var id =
+      data.allItems[input.type].length === 0
+        ? 0
+        : data.allItems[input.type][data.allItems[input.type].length - 1].id +
+          1;
     switch (true) {
       case input.type === "inc":
-        var x = new Income(0, input.description, input.value);
-        data.allItems.inc.push(x);
+        var x = new Income(id, input.description, input.value);
+        data.allItems[input.type].push(x);
         return x;
       case input.type === "exp":
-        var y = new Expense(0, input.description, input.value);
-        data.allItems.exp.push(y);
+        var y = new Expense(id, input.description, input.value);
+        data.allItems[input.type].push(y);
         return y;
       default:
         console.log("Unexpected expense type of " + input.type);
@@ -103,15 +113,16 @@ var controller = (function(budgetCtrl, UICtrl) {
   };
 
   var ctrlAddItem = function() {
+    var input, newItem;
     // Grab input data ✅
     var input = UICtrl.getInput();
     // Add item to the budget controller
-    budgetCtrl.pushItem(input);
-    var z = budgetCtrl.getData();
+    newItem = budgetCtrl.pushItem(input);
+    var y = budgetCtrl.getData();
     // Add the item to the UI
     // Calculate budget
     // Display the budget on the UI
-    console.log(z);
+    console.log(newItem, y);
   };
 
   return {
