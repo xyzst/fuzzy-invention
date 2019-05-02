@@ -1,5 +1,9 @@
 # Budgeting Application
 
+## Design
+
+- Use of data encapsulation with module pattern
+
 ## Todo
 
 - Add event handler (Controller module)
