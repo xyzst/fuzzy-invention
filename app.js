@@ -1,7 +1,56 @@
 /**
  * Budget Controller
  */
-var budgetController = (function() {})();
+var budgetController = (function() {
+  var data = {
+    allItems: {
+      exp: [],
+      inc: []
+    },
+    totals: {
+      exp: 0,
+      inc: 0
+    }
+  };
+  // Function constructor for Expense type
+  var Expense = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
+
+  //Function constructor for Income type
+  var Income = function(id, description, value) {
+    this.id = id;
+    this.description = description;
+    this.value = value;
+  };
+
+  var budgetFactory = function(input) {
+    switch (true) {
+      case input.type === "inc":
+        var x = new Income(0, input.description, input.value);
+        data.allItems.inc.push(x);
+        return x;
+      case input.type === "exp":
+        var y = new Expense(0, input.description, input.value);
+        data.allItems.exp.push(y);
+        return y;
+      default:
+        console.log("Unexpected expense type of " + input.type);
+        break;
+    }
+  };
+
+  return {
+    pushItem: function(input) {
+      return budgetFactory(input);
+    },
+    getData: function() {
+      return data;
+    }
+  };
+})();
 
 /**
  * UI Controller
@@ -57,10 +106,12 @@ var controller = (function(budgetCtrl, UICtrl) {
     // Grab input data ✅
     var input = UICtrl.getInput();
     // Add item to the budget controller
+    budgetCtrl.pushItem(input);
+    var z = budgetCtrl.getData();
     // Add the item to the UI
     // Calculate budget
     // Display the budget on the UI
-    console.log(input);
+    console.log(z);
   };
 
   return {
