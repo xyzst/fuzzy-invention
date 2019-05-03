@@ -39,7 +39,7 @@ var budgetController = (function() {
     // Do not use size of array, but rather the actual value since items can be
     // deleted from either array
     // best case: [1 2 3 4 5], next Id = 6 (sorted)
-    // worst case: [1 2 4 6 8], next Id = 9 (unsorted)\
+    // worst case: [1 2 4 6 8], next Id = 9 (unsorted)
     var id =
       data.allItems[input.type].length === 0
         ? 0
@@ -47,13 +47,13 @@ var budgetController = (function() {
           1;
     switch (true) {
       case input.type === "inc":
-        var x = new Income(id, input.description, input.value);
-        data.allItems[input.type].push(x);
-        return x;
+        var income = new Income(id, input.description, input.value);
+        data.allItems[input.type].push(income);
+        return income;
       case input.type === "exp":
-        var y = new Expense(id, input.description, input.value);
-        data.allItems[input.type].push(y);
-        return y;
+        var expense = new Expense(id, input.description, input.value);
+        data.allItems[input.type].push(expense);
+        return expense;
       default:
         console.log("Unexpected expense type of " + input.type);
         break;
