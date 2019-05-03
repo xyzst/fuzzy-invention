@@ -102,7 +102,11 @@ var UIController = (function() {
     clickEvent: "click",
     keyPressEvent: "keypress",
     incomeContainer: ".income__list",
-    expenseContainer: ".expenses__list"
+    expenseContainer: ".expenses__list",
+    budgetLabel: ".budget__value",
+    incomeLabel: ".budget__income--value",
+    expenseLabel: ".budget__expenses--value",
+    percentageLabel: ".budget__expenses--percentage"
   };
 
   return {
@@ -153,6 +157,15 @@ var UIController = (function() {
         curr.value = "";
       });
       fieldsArray[0].focus(); // return focus to the input for description
+    },
+    displayBudget: function(obj) {
+      document.querySelector(DOMStrings.budgetLabel).textContent = obj.budget;
+      document.querySelector(DOMStrings.incomeLabel).textContent =
+        obj.totalIncome;
+      document.querySelector(DOMStrings.expenseLabel).textContent =
+        obj.totalExpenses;
+      document.querySelector(DOMStrings.percentageLabel).textContent =
+        obj.percentage < 0 ? "---" : obj.percentage + "%";
     }
   };
 })();
@@ -179,8 +192,8 @@ var controller = (function(budgetCtrl, UICtrl) {
     budgetCtrl.calculateBudget();
     // Return budget
     var budget = budgetCtrl.getBudget();
-    console.log(budget);
     // Display the budget on the UI
+    UICtrl.displayBudget(budget);
   };
 
   var ctrlAddItem = function() {
@@ -203,6 +216,12 @@ var controller = (function(budgetCtrl, UICtrl) {
   return {
     init: function() {
       console.log("Application has started!");
+      UICtrl.displayBudget({
+        budget: 0,
+        percentage: -1,
+        totalIncome: 0,
+        totalExpenses: 0
+      });
       setupEventListeners();
     }
   };
