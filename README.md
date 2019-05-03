@@ -1,5 +1,12 @@
 # Budgeting Application
 
+## Application In Action
+
+1. \$ git clone git@github.com:xyzst/fuzzy-invention.git
+2. \$ cd fuzzy-invention
+3. \$ pwd
+4. Copy and paste result of step 3 into your favorite browser
+
 ## Design
 
 - Use of data encapsulation with module pattern
