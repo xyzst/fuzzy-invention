@@ -10,7 +10,9 @@ var budgetController = (function() {
     totals: {
       exp: 0,
       inc: 0
-    }
+    },
+    budget: 0,
+    percentage: -1 // -1 is a 'do not exist' value
   };
   // Function constructor for Expense type
   var Expense = function(id, description, value) {
@@ -24,6 +26,12 @@ var budgetController = (function() {
     this.id = id;
     this.description = description;
     this.value = value;
+  };
+
+  var calculateTotal = function(type) {
+    return data.allItems[type].length === 0
+      ? 0
+      : data.allItems[type].map(x => x.value).reduce((a, b) => a + b);
   };
 
   var budgetFactory = function(input) {
@@ -58,6 +66,23 @@ var budgetController = (function() {
     },
     getData: function() {
       return data;
+    },
+    getBudget: function() {
+      return {
+        budget: data.budget,
+        percentage: data.percentage,
+        totalIncome: data.totals.inc,
+        totalExpenses: data.totals.exp
+      };
+    },
+    calculateBudget: function() {
+      // iterate through incomes and expenses
+      data.totals.exp = calculateTotal("exp");
+      data.totals.inc = calculateTotal("inc");
+      // calculate budget: income - expenses
+      data.budget = data.totals.inc - data.totals.exp;
+      // calculate percentage of income that we spent
+      data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
     }
   };
 })();
@@ -148,7 +173,10 @@ var controller = (function(budgetCtrl, UICtrl) {
 
   var updateBudget = () => {
     // Calculate budget
+    budgetCtrl.calculateBudget();
     // Return budget
+    var budget = budgetCtrl.getBudget();
+    console.log(budget);
     // Display the budget on the UI
   };
 
