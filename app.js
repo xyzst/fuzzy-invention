@@ -86,6 +86,13 @@ var budgetController = (function() {
         data.totals.inc > 0
           ? Math.round((data.totals.exp / data.totals.inc) * 100)
           : -1;
+    },
+    deleteItem: function(identifier, type) {
+      var ids = data.allItems[type].map(curr => curr.id);
+      var index = ids.indexOf(
+        typeof identifier === "string" ? parseInt(identifier) : identifier
+      );
+      if (index > -1) data.allItems[type].splice(index, 1);
     }
   };
 })();
@@ -235,7 +242,7 @@ var controller = (function(budgetCtrl, UICtrl) {
       var id = splitID[1];
 
       // delete item from data structure in budget controller
-
+      budgetCtrl.deleteItem(id, type);
       // delete item from ui
 
       // update and show the new budget
