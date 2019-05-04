@@ -151,6 +151,11 @@ var UIController = (function() {
       // Insert HTML into DOM
       document.querySelector(element).insertAdjacentHTML("beforeend", newHtml);
     },
+    deleteListItem: function(selectorId) {
+      // Can only remove a child from the parent element
+      var elementToRemove = document.getElementById(selectorId);
+      elementToRemove.parentNode.removeChild(elementToRemove);
+    },
     getDOMStrings: function() {
       return DOMStrings;
     },
@@ -244,7 +249,7 @@ var controller = (function(budgetCtrl, UICtrl) {
       // delete item from data structure in budget controller
       budgetCtrl.deleteItem(id, type);
       // delete item from ui
-
+      UICtrl.deleteListItem(itemID);
       // update and show the new budget
     }
     // Traverse from <i> (icon) element through parentNode X4
