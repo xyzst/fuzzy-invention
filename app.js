@@ -253,9 +253,23 @@ var UIController = (function() {
       var now, year, month;
       now = new Date();
       month = now.getMonth();
+      months = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December"
+      ];
       year = now.getFullYear();
       document.querySelector(DOMStrings.dateLabel).textContent =
-        month + "/" + year;
+        months[month] + " " + year;
     }
   };
 })();
