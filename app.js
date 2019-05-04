@@ -136,7 +136,8 @@ var UIController = (function() {
     incomeLabel: ".budget__income--value",
     expenseLabel: ".budget__expenses--value",
     percentageLabel: ".budget__expenses--percentage",
-    container: ".container"
+    container: ".container",
+    expensesPercentageLabel: ".item__percentage"
   };
 
   return {
@@ -201,6 +202,21 @@ var UIController = (function() {
         obj.totalExpenses;
       document.querySelector(DOMStrings.percentageLabel).textContent =
         obj.percentage < 0 ? "---" : obj.percentage + "%";
+    },
+    displayPercentages: function(percentages) {
+      console.log(percentages);
+      var fields = document.querySelectorAll(
+        DOMStrings.expensesPercentageLabel
+      );
+      var nodeListForEach = function(list, callback) {
+        for (var i = 0; i < list.length; i++) {
+          callback(list[i], i);
+        }
+      };
+      nodeListForEach(fields, function(current, index) {
+        current.textContent =
+          percentages[index] > 0 ? percentages[index] + "%" : "---";
+      });
     }
   };
 })();
@@ -242,8 +258,8 @@ var controller = (function(budgetCtrl, UICtrl) {
     budgetCtrl.calculatePercentages();
     // read percentages from budget controller
     var percentages = budgetCtrl.getPercentages();
-    console.log(percentages);
     // update UI with new percentages
+    UICtrl.displayPercentages(percentages);
   };
 
   var ctrlAddItem = function() {
@@ -274,7 +290,6 @@ var controller = (function(budgetCtrl, UICtrl) {
     // Not best practice, hard coding here
     itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
     if (itemID) {
-      console.log("delete detected");
       var splitID = itemID.split("-");
       var type = splitID[0];
       var id = splitID[1];
