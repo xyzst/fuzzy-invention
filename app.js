@@ -251,6 +251,7 @@ var controller = (function(budgetCtrl, UICtrl) {
       // delete item from ui
       UICtrl.deleteListItem(itemID);
       // update and show the new budget
+      updateBudget();
     }
     // Traverse from <i> (icon) element through parentNode X4
     // console.log(event.target.parentNode.parentNode.parentNode.parentNode.id);
