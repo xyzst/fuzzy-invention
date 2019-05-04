@@ -137,7 +137,8 @@ var UIController = (function() {
     expenseLabel: ".budget__expenses--value",
     percentageLabel: ".budget__expenses--percentage",
     container: ".container",
-    expensesPercentageLabel: ".item__percentage"
+    expensesPercentageLabel: ".item__percentage",
+    dateLabel: ".budget__title--month"
   };
 
   /**
@@ -247,6 +248,14 @@ var UIController = (function() {
         current.textContent =
           percentages[index] > 0 ? percentages[index] + "%" : "---";
       });
+    },
+    displayDate: function() {
+      var now, year, month;
+      now = new Date();
+      month = now.getMonth();
+      year = now.getFullYear();
+      document.querySelector(DOMStrings.dateLabel).textContent =
+        month + "/" + year;
     }
   };
 })();
@@ -348,6 +357,7 @@ var controller = (function(budgetCtrl, UICtrl) {
         totalIncome: 0,
         totalExpenses: 0
       });
+      UICtrl.displayDate();
       setupEventListeners();
     }
   };
