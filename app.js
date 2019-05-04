@@ -106,7 +106,8 @@ var UIController = (function() {
     budgetLabel: ".budget__value",
     incomeLabel: ".budget__income--value",
     expenseLabel: ".budget__expenses--value",
-    percentageLabel: ".budget__expenses--percentage"
+    percentageLabel: ".budget__expenses--percentage",
+    container: ".container"
   };
 
   return {
@@ -129,8 +130,8 @@ var UIController = (function() {
       html =
         // Create HTML string with placeholder text
         isIncome
-          ? '<div class="item clearfix" id="income-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
-          : '<div class="item clearfix" id="expense-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
+          ? '<div class="item clearfix" id="inc-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>'
+          : '<div class="item clearfix" id="exp-%id%"><div class="item__description">%description%</div><div class="right clearfix"><div class="item__value">%value%</div><div class="item__percentage">21%</div><div class="item__delete"><button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button></div></div></div>';
 
       element = isIncome
         ? DOMStrings.incomeContainer
@@ -185,6 +186,12 @@ var controller = (function(budgetCtrl, UICtrl) {
         ctrlAddItem();
       }
     });
+
+    // Adding event listener to parent html element of both income and expenses
+    // Delegating responsibility of manipulating DOM to ctrlDeleteItem
+    document
+      .querySelector(DOM.container)
+      .addEventListener(DOM.clickEvent, ctrlDeleteItem);
   };
 
   var updateBudget = () => {
@@ -211,6 +218,32 @@ var controller = (function(budgetCtrl, UICtrl) {
       // Calculate and update budget
       updateBudget();
     }
+  };
+
+  /**
+   * Event bubbling to find if the user clicked on the delete icon
+   * @param {*} event
+   */
+  var ctrlDeleteItem = event => {
+    var itemID;
+    // Not best practice, hard coding here
+    itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
+    if (itemID) {
+      console.log("delete detected");
+      var splitID = itemID.split("-");
+      var type = splitID[0];
+      var id = splitID[1];
+
+      // delete item from data structure in budget controller
+
+      // delete item from ui
+
+      // update and show the new budget
+    }
+    // Traverse from <i> (icon) element through parentNode X4
+    // console.log(event.target.parentNode.parentNode.parentNode.parentNode.id);
+    // console.log(event);
+    // if (event.target)
   };
 
   return {
